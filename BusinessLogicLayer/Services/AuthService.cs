@@ -47,6 +47,7 @@ namespace BusinessLogicLayer.Services
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                     identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
                     identity.AddClaim(new Claim("Id", user.Id.ToString()));
+                    identity.AddClaim(new Claim("IsAdmin", user.IsAdmin.ToString()));
                     return identity;
                 }
                 throw new InvalidCredentialsException();

@@ -7,6 +7,7 @@ namespace BusinessLogicLayer.Interfaces
     {
         public Task<IEnumerable<Book>> GetAllBooks();
 
+        public Task<Book> AddNewBook(Book book);
         public Task<IEnumerable<Book>> SearchByTitle(string title);
         public Task<IEnumerable<Book>> SearchByAuthor(string author);
         public Task<Book> GetByISBN(string ISBN);

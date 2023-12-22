@@ -1,8 +1,6 @@
-using BusinessLogicLayer.Entities;
 using BusinessLogicLayer.Exceptions;
 using BusinessLogicLayer.Interfaces;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PresentationLayer.Pages.Login.Models;
@@ -23,8 +21,13 @@ namespace PresentationLayer.Pages.Login
 
         [BindProperty]
         public LoginCredentials Credentials { get; set; }
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (User.Identity is not null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
         }
 
 
@@ -35,7 +38,6 @@ namespace PresentationLayer.Pages.Login
                 var identity = await _authService.LoginUser(Credentials.Username,Credentials.Password);
 
                 var principal = new ClaimsPrincipal(identity);
-
                 await HttpContext.SignInAsync("Cookies", principal);
 
                 return RedirectToPage("/Index");
@@ -47,6 +49,5 @@ namespace PresentationLayer.Pages.Login
             }
 
         }
-
     }
 }

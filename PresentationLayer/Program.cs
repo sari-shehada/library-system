@@ -22,6 +22,11 @@ builder.Services.AddAuthentication(options =>
 .AddCookie("Cookies", options =>
 {
     options.LoginPath = "/Login/Login";
+    options.AccessDeniedPath = "/AccessDenied";
+});
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminsOnly", policy => policy.RequireClaim("IsAdmin", true.ToString()));
 });
 
 builder.Services.AddRazorPages();
@@ -39,6 +44,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapRazorPages();
 

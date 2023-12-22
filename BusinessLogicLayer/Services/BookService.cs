@@ -85,5 +85,14 @@ namespace BusinessLogicLayer.Services
             }
             return result;
         }
+
+        public async Task<Book> AddNewBook(Book book)
+        {
+            if (book.ISBN.Length != 13 || !int.TryParse(book.ISBN, out _))
+            {
+                throw new InvalidISBNFormatException();
+            }
+            return await _bookRepository.Insert(book);
+        }
     }
 }

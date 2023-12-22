@@ -1,0 +1,41 @@
+﻿@page
+@using DataAccessLayer.Entities;
+@model PresentationLayer.Pages.Books.IndexModel
+@{
+    ViewData["Title"] = "Book Management";
+}
+<h1>Current Books (@Model.Books.Count())</h1>
+<a class="btn btn-primary" asp-area="" asp-page="/Books/AddBook">Add Book</a>
+<table style="width: 100%;
+      table-layout: fixed;">
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Status</th>
+        <th>ISBN</th>
+    </tr>
+    @foreach (Book book in Model.Books)
+    {
+        <tr>
+            <td>
+                @book.Title
+            </td>
+            <td>
+                @book.Author
+            </td>
+            <td>
+                @if (book.IsBorrowed)
+                {
+                    <p>Currently borrowed</p>
+                }
+                else
+                {
+                   <p>Not Borrowed</p>
+                }
+            </td>
+            <td>
+                @book.ISBN
+            </td>
+        </tr>
+    }
+</table>

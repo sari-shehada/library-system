@@ -1,0 +1,42 @@
+﻿@page
+@model PresentationLayer.Pages.Books.AddBookModel
+@{
+}
+
+<div class="container border" style="padding:20px">
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Form.Title"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Form.Title" class="form-control" />
+            </div>
+            <span class="text-danger" asp-validation-for="Form.Title"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Form.Author"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Form.Author" class="form-control" />
+            </div>
+            <span class="text-danger" asp-validation-for="Form.Author"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="Form.ISBN"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Form.ISBN" class="form-control" />
+            </div>
+            <span class="text-danger" asp-validation-for="Form.ISBN"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <input type="submit" class="btn btn-primary" value="Add Book"/>
+            </div>
+        </div>
+    </form>
+</div>

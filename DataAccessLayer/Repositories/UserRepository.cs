@@ -152,6 +152,7 @@ namespace DataAccessLayer.Repositories
                 LastName = reader.GetValue("LastName").ToString()!,
                 Username = reader.GetValue("Username").ToString()!,
                 Password = reader.GetValue("Password").ToString()!,
+                IsAdmin = bool.Parse(reader.GetValue("IsAdmin").ToString()!)
             };
         }
     }
