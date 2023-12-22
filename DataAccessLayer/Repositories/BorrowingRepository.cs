@@ -73,7 +73,7 @@ namespace DataAccessLayer.Repositories
         {
             await _connection.ExecuteWithConnection(async (connection) =>
             {
-                string commandText = "INSERT INTO `borrowings` (`Id`, `UserId`, `BookId`, `BorrowDate`, `ReturnDate`) VALUES (@Id,@UserId,@BookId,@BorrowDate,@ReturnDate);";
+                string commandText = "INSERT INTO `borrowings` (`Id`, `UserId`, `BookId`, `BorrowDate`, `ReturnDate`) VALUES (@Id,@UserId,@BookId,STR_TO_DATE(@BorrowDate, '%m/%d/%Y'),STR_TO_DATE(@ReturnDate, '%m/%d/%Y'));";
                 MySqlCommand command = new MySqlCommand(commandText, connection);
                 command.Parameters.AddWithValue("@Id", entity.Id);
                 command.Parameters.AddWithValue("@UserId", entity.UserId);
@@ -91,12 +91,12 @@ namespace DataAccessLayer.Repositories
         {
             await _connection.ExecuteWithConnection(async (connection) =>
            {
-               string commandText = "UPDATE `borrowings` SET `UserId`= @UserId,`BookId`= @BookId,`BorrowDate`= @BorrowDate,`ReturnDate`= @ReturnDate WHERE borrowings.Id = @Id;";
+               string commandText = "UPDATE `borrowings` SET `UserId`= @UserId,`BookId`= @BookId,`BorrowDate`= STR_TO_DATE(@BorrowDate, '%m/%d/%Y'),`ReturnDate`= STR_TO_DATE(@ReturnDate, '%m/%d/%Y') WHERE borrowings.Id = @Id;";
                MySqlCommand command = new MySqlCommand(commandText, connection);
                command.Parameters.AddWithValue("@UserId", entity.UserId);
                command.Parameters.AddWithValue("@BookId", entity.BookId);
                command.Parameters.AddWithValue("@BorrowDate", entity.BorrowDate);
-               command.Parameters.AddWithValue("@ReturnDate", entity.ReturnDate);
+               command.Parameters.AddWithValue("@ReturnDate", entity.ReturnDate == null ? DBNull.Value : entity.ReturnDate);
                command.Parameters.AddWithValue("@Id", entity.Id);
                using (var reader = await command.ExecuteReaderAsync())
                {
@@ -128,16 +128,19 @@ namespace DataAccessLayer.Repositories
 
         public Borrowing MapRowToEntity(DbDataReader reader)
         {
-            string? ReturnDate = reader.GetValue("ReturnDate").ToString() ?? null;
+            string? returnDate = reader.GetValue("ReturnDate").ToString();
+            if (returnDate == "")
+            {
+                returnDate = null;
+            }
             return new Borrowing()
             {
                 Id = Guid.Parse(reader.GetValue("Id").ToString()!),
                 UserId = Guid.Parse(reader.GetValue("UserId").ToString()!),
                 BookId = Guid.Parse(reader.GetValue("BookId").ToString()!),
-                BorrowDate = DateTime.Parse(reader.GetValue("BorrowDate").ToString()!),
-                ReturnDate = ReturnDate == null ? null : DateTime.Parse(ReturnDate),
+                BorrowDate = DateOnly.FromDateTime(DateTime.Parse(reader.GetValue("BorrowDate").ToString()!)),
+                ReturnDate = returnDate == null ? null : DateOnly.FromDateTime(DateTime.Parse(returnDate)),
             };
         }
     }
-
 }
