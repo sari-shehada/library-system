@@ -1,0 +1,36 @@
+﻿@page
+@using BusinessLogicLayer.Entities;
+@model PresentationLayer.Pages.MyBorrowedBooks.IndexModel
+@{
+    ViewData["Title"] = "Borrowed Books";
+}
+
+<h1>My Borrowed Books</h1>
+<h1>@Model.BorrowedBooks.Count()</h1>
+<table style="width: 100%;
+      table-layout: fixed;">
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Status</th>
+    </tr>
+    @foreach (BorrowedBookDTO borrowing in Model.BorrowedBooks)
+    {
+        <tr>
+            <td>
+                @borrowing.BookTitle
+            </td>
+            <td>
+                @borrowing.BookAuthor
+            </td>
+            <td>
+                @borrowing.BorrowDate
+            </td>
+            <td>
+                <form method="post">
+                    <button type="submit" class="btn btn-primary" name="id" value="@borrowing.BorrowingId">Return Book</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

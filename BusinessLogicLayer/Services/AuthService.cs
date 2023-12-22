@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using BusinessLogicLayer.Entities;
@@ -7,6 +8,7 @@ using BusinessLogicLayer.Interfaces;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Exceptions;
 using DataAccessLayer.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BusinessLogicLayer.Services
@@ -31,15 +33,21 @@ namespace BusinessLogicLayer.Services
             return new UserDTO(user);
         }
 
-        public async Task<UserDTO> LoginUser(string username, string password)
+        public async Task<ClaimsIdentity> LoginUser(string username, string password)
         {
-            //TODO: Rethink
             try
             {
+                if (username is null || password is null)
+                {
+                    throw new InvalidCredentialsException();
+                }
                 User user = await _userRepository.GetByUsername(username);
                 if (user.Password == password)
                 {
-
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+                    identity.AddClaim(new Claim("Id", user.Id.ToString()));
+                    return identity;
                 }
                 throw new InvalidCredentialsException();
             }

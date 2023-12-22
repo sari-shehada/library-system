@@ -1,4 +1,5 @@
 using BusinessLogicLayer.Entities;
+using System.Security.Claims;
 
 namespace BusinessLogicLayer.Interfaces
 {
@@ -8,7 +9,7 @@ namespace BusinessLogicLayer.Interfaces
         public Task<UserDTO> GetUserInfoByUsername(string username);
 
         //TODO: Change to return a token
-        public Task<UserDTO> LoginUser(string username, string password);
+        public Task<ClaimsIdentity> LoginUser(string username, string password);
 
     }
 }

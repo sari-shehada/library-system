@@ -1,0 +1,39 @@
+﻿@page
+@using DataAccessLayer.Entities;
+@model PresentationLayer.Pages.Search.ResultsModel
+@{
+    ViewData["Title"] = "Search Results";
+}
+<h1>@ViewData["Title"]</h1>
+<h1>@Model.SearchResults.Count()</h1>
+<table style="width: 100%;
+      table-layout: fixed;">
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Status</th>
+    </tr>
+    @foreach (Book book in Model.SearchResults)
+    {
+        <tr>
+            <td>
+                @book.Title
+            </td>
+            <td>
+                @book.Author
+            </td>
+            <td>
+                @if (book.IsBorrowed)
+                {
+                    <p>Currently borrowed</p>
+                }
+                else
+                {
+                    <form method="post">
+                        <button type="submit" class="btn btn-primary" name="id" value="@book.Id">Borrow This Book</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+</table>

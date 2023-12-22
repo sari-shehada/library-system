@@ -4,7 +4,13 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<h1>Search for books</h1>
+<div class="container border" style="padding:20px">
+    <form method="post" asp-page-handler="OnPost">
+        <input style="border-radius: 8px; padding: 4px" type="text" name="searchTerm" placeholder="Enter search term" />
+        <button type="submit" class="btn btn-primary" name="searchType" value="Title" asp-route-searchTerm="searchTerm">Search by Title</button>
+        <button type="submit" class="btn btn-primary" name="searchType" value="Author" asp-route-searchTerm="searchTerm">Search by Author</button>
+        <button type="submit" class="btn btn-primary" name="searchType" value="ISBN" asp-route-searchTerm="searchTerm">Search by ISBN</button>
+    </form>
 </div>
