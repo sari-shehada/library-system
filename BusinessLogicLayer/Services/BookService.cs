@@ -56,7 +56,6 @@ namespace BusinessLogicLayer.Services
         public async Task<Borrowing> BorrowBook(Guid UserId, Guid BookId)
         {
             Book book = await _bookRepository.GetById(BookId);
-            //TODO: Add user existence validation
             if (book.IsBorrowed)
             {
                 throw new BookBorrowedException();
@@ -88,7 +87,7 @@ namespace BusinessLogicLayer.Services
 
         public async Task<Book> AddNewBook(Book book)
         {
-            if (book.ISBN.Length != 13 || !int.TryParse(book.ISBN, out _))
+            if (book.ISBN.Length != 13 || !long.TryParse(book.ISBN, out _))
             {
                 throw new InvalidISBNFormatException();
             }

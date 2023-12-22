@@ -32,7 +32,6 @@ namespace PresentationLayer.Pages.Books
                     Title = Form.Title,
                     Author = Form.Author,
                     ISBN = Form.ISBN,
-
                 };
                 await _bookService.AddNewBook(book);
                 return RedirectToPage("/Books/Index");
